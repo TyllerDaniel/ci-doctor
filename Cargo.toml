@@ -19,3 +19,10 @@ serde_json = "1.0.154"
 
 [dev-dependencies]
 criterion = "0.8.2"
+
+[[bench]]
+name = "diagnose"
+harness = false
+
+[profile.release]
+lto = "thin"
