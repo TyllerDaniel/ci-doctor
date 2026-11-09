@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.acme.shop.CartTest" tests="4" failures="1" errors="1" skipped="0" flakes="1">
+  <testcase name="addsItems" classname="com.acme.shop.CartTest" time="0.004"/>
+  <testcase name="appliesCoupon" classname="com.acme.shop.CartTest" time="0.011">
+    <failure message="expected: &lt;90.0&gt; but was: &lt;100.0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <90.0> but was: <100.0>
+	at com.acme.shop.CartTest.appliesCoupon(CartTest.java:41)]]></failure>
+  </testcase>
+  <testcase name="loadsPrices" classname="com.acme.shop.CartTest" time="5.002">
+    <error message="Connection refused" type="java.net.ConnectException"><![CDATA[java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.connect0(Native Method)]]></error>
+  </testcase>
+  <testcase name="concurrentCheckout" classname="com.acme.shop.CartTest" time="0.230">
+    <flakyFailure message="expected: &lt;2&gt; but was: &lt;1&gt;" type="org.opentest4j.AssertionFailedError"/>
+  </testcase>
+</testsuite>

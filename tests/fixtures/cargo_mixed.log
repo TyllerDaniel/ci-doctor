@@ -1,0 +1,23 @@
+   Compiling parser v0.4.1 (/work/parser)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.31s
+     Running unittests src/lib.rs (target/debug/deps/parser-1f2e3d4c)
+
+running 14 tests
+test lexer::tests::idents ... ok
+test parser::tests::empty_input ... FAILED
+test parser::tests::nested ... ok
+
+failures:
+
+---- parser::tests::empty_input stdout ----
+
+thread 'parser::tests::empty_input' panicked at src/parser.rs:88:9:
+assertion `left == right` failed
+  left: Some(Eof)
+ right: None
+
+failures:
+    parser::tests::empty_input
+
+test result: FAILED. 13 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out
+error: test failed, to rerun pass `--lib`

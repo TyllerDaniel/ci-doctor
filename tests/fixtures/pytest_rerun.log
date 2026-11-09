@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+plugins: rerunfailures-14.0
+collected 86 items
+
+tests/test_models.py ..........................                          [ 30%]
+tests/test_api.py::test_list_users RERUN                                  [ 31%]
+tests/test_api.py::test_list_users PASSED                                 [ 31%]
+tests/test_api.py ...............                                         [ 49%]
+tests/test_billing.py ...F.....                                           [ 59%]
+
+=================================== FAILURES ===================================
+_____________________________ test_invoice_total ______________________________
+
+    def test_invoice_total():
+>       assert invoice_total([10.0, 5.5]) == 15.0
+E       assert 15.49 == 15.0
+
+tests/test_billing.py:22: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_billing.py::test_invoice_total - assert 15.49 == 15.0
+==================== 1 failed, 84 passed, 1 rerun in 4.21s =====================

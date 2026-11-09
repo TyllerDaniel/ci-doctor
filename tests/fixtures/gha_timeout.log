@@ -1,0 +1,7 @@
+2026-11-03T22:00:04.0000000Z ##[group]Run ./scripts/integration.sh
+2026-11-03T22:00:04.0000100Z timeout-minutes: 30
+2026-11-03T22:00:05.1000000Z Starting integration suite (412 tests)
+2026-11-03T22:12:40.2000000Z [ 38%] tests/integration/test_export.py ....
+2026-11-03T22:29:59.9000000Z [ 41%] tests/integration/test_export.py::test_full_export
+2026-11-03T22:30:04.0100000Z ##[error]The job running on runner GitHub Actions 7 has exceeded the maximum execution time of 30 minutes.
+2026-11-03T22:30:04.0200000Z ##[error]The operation was canceled.

@@ -1,0 +1,12 @@
+2026-11-02T09:14:01.1032210Z ##[group]Run npm ci
+2026-11-02T09:14:01.1033120Z npm ci
+2026-11-02T09:14:01.1040050Z shell: /usr/bin/bash -e {0}
+2026-11-02T09:14:01.1041000Z ##[endgroup]
+2026-11-02T09:14:07.5520010Z npm ERR! code ERESOLVE
+2026-11-02T09:14:07.5521020Z npm ERR! ERESOLVE unable to resolve dependency tree
+2026-11-02T09:14:07.5522030Z npm ERR!
+2026-11-02T09:14:07.5523040Z npm ERR! While resolving: web-app@2.3.0
+2026-11-02T09:14:07.5524050Z npm ERR! Found: react@19.1.0
+2026-11-02T09:14:07.5525060Z npm ERR! Could not resolve dependency:
+2026-11-02T09:14:07.5526070Z npm ERR! peer react@"^18.0.0" from react-datepicker@6.9.0
+2026-11-02T09:14:07.6610080Z ##[error]Process completed with exit code 1.
