@@ -11,12 +11,17 @@ const MERGE_WINDOW: usize = 15;
 /// Strip GitHub Actions timestamps and annotation prefixes so rules see the real message.
 fn normalize(line: &str) -> &str {
     let mut s = line.trim_end_matches('\r');
-    // "2026-11-09T14:03:11.1234567Z message"
-    if s.len() > 29
-        && s.as_bytes().get(10) == Some(&b'T')
-        && s[..4].bytes().all(|b| b.is_ascii_digit())
-        && let Some(pos) = s.find("Z ")
+    // "2026-11-09T14:03:11.1234567Z message". Inspect raw bytes rather than
+    // slicing the str: a line that starts with multi-byte characters would
+    // otherwise panic on a non-char-boundary index.
+    let b = s.as_bytes();
+    if b.len() > 29
+        && b[..4].iter().all(u8::is_ascii_digit)
+        && b[4] == b'-'
+        && b[10] == b'T'
+        && let Some(pos) = b[..40.min(b.len())].windows(2).position(|w| w == b"Z ")
     {
+        // pos points at an ASCII 'Z', so pos + 2 is a char boundary.
         s = &s[pos + 2..];
     }
     for prefix in ["##[error]", "##[warning]", "::error::"] {
@@ -121,6 +126,14 @@ mod tests {
         );
         assert_eq!(normalize("::error::boom"), "boom");
         assert_eq!(normalize("plain line"), "plain line");
+    }
+
+    #[test]
+    fn multibyte_lines_do_not_panic() {
+        // Byte 10 is 'T' and byte 4 falls inside a 3-byte character.
+        let line = "€€€aT connection refused padding padding padding";
+        assert_eq!(normalize(line), line);
+        assert_eq!(diagnose_text(line).len(), 1);
     }
 
     #[test]
