@@ -49,7 +49,9 @@ const RULES: &[Rule] = &[
     },
     Rule {
         category: Category::FlakyTest,
-        pattern: r"(?i)(\bRERUN\b|passed on retry|\bflaky\b|retry(ing)? \d+ ?/ ?\d+|flakyFailure|rerunFailure)",
+        // RERUN and the Surefire element names are matched case-sensitively so that
+        // banners like "plugins: rerunfailures-14.0" and summaries like "1 rerun" don't count.
+        pattern: r"(\bRERUN\b|\bflakyFailure\b|\brerunFailure\b|(?i:passed on retry|\bis flaky\b|\bflaky test\b|retry(ing)? (attempt )?\d+ ?(/|of) ?\d+))",
     },
     Rule {
         category: Category::AssertionFailure,
@@ -60,10 +62,11 @@ const RULES: &[Rule] = &[
 static SET: LazyLock<RegexSet> =
     LazyLock::new(|| RegexSet::new(RULES.iter().map(|r| r.pattern)).expect("valid rule patterns"));
 
-/// Test-name extractors for common runners: pytest, Go, cargo test.
+/// Test-name extractors for common runners: pytest (summary and verbose), Go, cargo test.
 static TEST_NAME: LazyLock<Vec<Regex>> = LazyLock::new(|| {
     [
         r"^FAILED (\S+::\S+)",
+        r"^(\S+::\S+) (?:RERUN|FAILED|ERROR)\b",
         r"--- FAIL: (\S+)",
         r"^test (\S+) \.\.\. FAILED",
     ]
@@ -156,6 +159,8 @@ mod tests {
             "test result: ok. 12 passed; 0 failed",
             "Setting connection timeout to 30s",
             "Expected behaviour is documented in README",
+            "plugins: rerunfailures-14.0, flaky-3.8.1",
+            "==================== 1 failed, 84 passed, 1 rerun in 4.21s ====",
         ] {
             assert_eq!(classify(line), None, "line: {line}");
         }
@@ -188,6 +193,10 @@ mod tests {
         assert_eq!(
             test_name("test parser::tests::empty ... FAILED").as_deref(),
             Some("parser::tests::empty")
+        );
+        assert_eq!(
+            test_name("tests/test_api.py::test_list_users RERUN      [ 31%]").as_deref(),
+            Some("tests/test_api.py::test_list_users")
         );
         assert_eq!(test_name("npm ERR! code ERESOLVE"), None);
     }
